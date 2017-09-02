@@ -6,13 +6,15 @@ HETZNER_HOST_IP=192.168.100.2
 : ${GOVC_PASSWORD?"Need to set GOVC_PASSWORD"}
 : ${GOVC_INSECURE?"Need to set GOVC_INSECURE"}
 : ${HETZNER_HOST_IP?"Need to set HETZNER_HOST_IP"}
-HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-90}
+HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-80}
 
 govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP
 
 memory_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory:/ { print $2 }')
 memory_usage_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory usage/ { print $3 }')
 memory_value=${memory_value//MB/} # remove suffix
+[[ -z "$memory_value" ]] && { echo "memory_value is empty" ; exit 1; }
+[[ -z "$memory_usage_value" ]] && { echo "memory_usage_value is empty" ; exit 1; }
 echo "Memory total:" $memory_value"MB"
 echo "Memory usage:" $memory_usage_value"MB"
 
