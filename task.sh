@@ -15,6 +15,8 @@ govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP
 memory_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory:[[:space:]]/ { print $2 }')
 memory_usage_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory[[:space:]]/ { print $3 }')
 memory_value=${memory_value//MB/} # remove suffix
+[[ -z "$memory_value" ]] && { echo "memory_value is empty" ; exit 1; }
+[[ -z "$memory_usage_value" ]] && { echo "memory_usage_value is empty" ; exit 1; }
 echo "Memory total:" $memory_value"MB"
 echo "Memory usage:" $memory_usage_value"MB"
 
