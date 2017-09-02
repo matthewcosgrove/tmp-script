@@ -7,6 +7,8 @@ HETZNER_HOST_IP=192.168.100.2
 : ${GOVC_INSECURE?"Need to set GOVC_INSECURE"}
 : ${HETZNER_HOST_IP?"Need to set HETZNER_HOST_IP"}
 HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-90}
+govc version
+govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP
 
 memory_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory:[[:space:]]/ { print $2 }')
 memory_usage_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory[[:space:]]/ { print $3 }')
