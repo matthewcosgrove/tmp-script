@@ -11,8 +11,7 @@ HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESH
 echo "Percentage memory threshold:" $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD"%"
 
 echo "Host: " $HETZNER_HOST_IP
-ls
-ls ..
+
 memory_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory:/ { print $2 }')
 memory_usage_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory usage/ { print $3 }')
 memory_value=${memory_value//MB/} # remove suffix
@@ -27,7 +26,7 @@ echo "Percentage memory usage:" $percent"%"
 if (( ${percent} > $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD )); then
   msg="Host $HETZNER_HOST_IP has memory running at $percent%. Please reduce the memory footprint by shutting down VMs"
   echo >&2 $msg;
-  echo $msg >> ../$FAILURE_RESULT_OUTPUT_FOLDER/$FAILURE_RESULT_OUTPUT_FILE
+  echo $msg >> $FAILURE_RESULT_OUTPUT_FOLDER/$FAILURE_RESULT_OUTPUT_FILE
   exit 1;
 fi
 
