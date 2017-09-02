@@ -7,6 +7,7 @@ HETZNER_HOST_IP=192.168.100.2
 : ${GOVC_INSECURE?"Need to set GOVC_INSECURE"}
 : ${HETZNER_HOST_IP?"Need to set HETZNER_HOST_IP"}
 HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-90}
+which awk
 awk --version
 hash awk 2>/dev/null || { echo >&2 "awk not installed so aborting."; exit 1; }
 govc version
