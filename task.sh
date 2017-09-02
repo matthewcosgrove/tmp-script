@@ -1,14 +1,14 @@
 #!/bin/bash
-HETZNER_HOST_IP=192.168.100.2
 
 : ${GOVC_URL?"Need to set GOVC_URL"}
 : ${GOVC_USERNAME?"Need to set GOVC_USERNAME"}
 : ${GOVC_PASSWORD?"Need to set GOVC_PASSWORD"}
 : ${GOVC_INSECURE?"Need to set GOVC_INSECURE"}
 : ${HETZNER_HOST_IP?"Need to set HETZNER_HOST_IP"}
-HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-80}
+HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-90}
+echo "Percentage memory threshold:" $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD"%"
 
-govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP
+echo "Host: " $HETZNER_HOST_IP
 
 memory_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory:/ { print $2 }')
 memory_usage_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory usage/ { print $3 }')
