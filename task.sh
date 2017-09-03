@@ -5,12 +5,13 @@
 : ${GOVC_PASSWORD?"Need to set GOVC_PASSWORD"}
 : ${GOVC_INSECURE?"Need to set GOVC_INSECURE"}
 : ${HETZNER_HOST_IP?"Need to set HETZNER_HOST_IP"}
+: ${HETZNER_HOST?"Need to set HETZNER_HOST"}
 : ${FAILURE_RESULT_OUTPUT_FOLDER?"Need to set FAILURE_RESULT_OUTPUT_FOLDER"}
 : ${FAILURE_RESULT_OUTPUT_FILE?"Need to set FAILURE_RESULT_OUTPUT_FILE"}
 HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD=${HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD:-80}
 echo "Percentage memory threshold:" $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD"%"
 
-echo "Host: " $HETZNER_HOST_IP
+echo "Host: " $HETZNER_HOST $HETZNER_HOST_IP
 
 memory_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory:/ { print $2 }')
 memory_usage_value=$(govc host.info -host.ipath /drinks-dc/host/drinks-cl/$HETZNER_HOST_IP | awk '/Memory usage/ { print $3 }')
@@ -26,10 +27,10 @@ echo "Percentage memory usage:" $percent"%"
 if (( ${percent} > $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD )); then
   output_file=$FAILURE_RESULT_OUTPUT_FOLDER/$FAILURE_RESULT_OUTPUT_FILE
   echo "Percentage memory threshold:" $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD"%" >> $output_file
-  msg="Host $HETZNER_HOST_IP has memory running at $percent%. Please reduce the memory footprint by shutting down VMs"
+  msg="Host $HETZNER_HOST $HETZNER_HOST_IP has memory running at $percent%. Please reduce the memory footprint by shutting down VMs"
   echo >&2 $msg;
   echo $msg >> $output_file
   exit 1;
 fi
 
-echo "Host $HETZNER_HOST_IP is running fine"
+echo "Host $HETZNER_HOST $HETZNER_HOST_IP is running fine"
