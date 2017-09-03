@@ -24,9 +24,11 @@ percent=$((200*$memory_usage_value/$memory_value % 2 + 100*$memory_usage_value/$
 echo "Percentage memory usage:" $percent"%"
 
 if (( ${percent} > $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD )); then
+  output_file=$FAILURE_RESULT_OUTPUT_FOLDER/$FAILURE_RESULT_OUTPUT_FILE
+  echo "Percentage memory threshold:" $HETZNER_HOST_MEMORY_PERCENTAGE_THRESHOLD"%" >> $output_file
   msg="Host $HETZNER_HOST_IP has memory running at $percent%. Please reduce the memory footprint by shutting down VMs"
   echo >&2 $msg;
-  echo $msg >> $FAILURE_RESULT_OUTPUT_FOLDER/$FAILURE_RESULT_OUTPUT_FILE
+  echo $msg >> $output_file
   exit 1;
 fi
 
